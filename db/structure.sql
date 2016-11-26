@@ -83,7 +83,8 @@ CREATE TABLE machines (
     id integer NOT NULL,
     name character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    color character varying
 );
 
 
@@ -227,6 +228,6 @@ CREATE INDEX index_events_on_person_id ON events USING btree (person_id);
 
 SET search_path TO "$user",public;
 
-INSERT INTO schema_migrations (version) VALUES ('20161125115554'), ('20161125115617'), ('20161125123712');
+INSERT INTO schema_migrations (version) VALUES ('20161125115554'), ('20161125115617'), ('20161125123712'), ('20161126093409');
 
 
