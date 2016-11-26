@@ -19,4 +19,4 @@
 .byebug_history
 
 /public/generated
-/webpack/node_modules
+/node_modules

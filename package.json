@@ -2,7 +2,7 @@
   "name": "lasertime",
   "version": "0.0.1",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.8",
     "babel-preset-es2015": "^6.18.0",
