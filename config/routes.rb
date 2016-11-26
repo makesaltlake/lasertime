@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get '/', to: 'main#index'
+
   namespace :api do
     get 'machines', to: 'machines#index'
     get 'people', to: 'people#index'
