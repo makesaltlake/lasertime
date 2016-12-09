@@ -5,7 +5,9 @@ module.exports = {
   entry: path.resolve(__dirname, 'webpack/index.jsx'),
   output: {
     path: path.resolve(__dirname, 'public/generated'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    libraryTarget: 'var',
+    library: 'Lasertime'
   },
   module: {
     loaders: [

@@ -1,0 +1,106 @@
+body {
+  margin: 0;
+}
+.top-bar {
+  text-align: center;
+  position: relative;
+  font-family: 'Catamaran', sans-serif
+}
+.top-bar-title {
+  font-size: 38px;
+  color: white;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding-top: 30px;
+  padding-bottom: 130px;
+}
+.top-bar-machine-chooser {
+  float: left;
+  padding: 10px;
+}
+.top-bar-machine-chooser select {
+  background-color: rgba(255, 255, 255, 0);
+  color: white;
+}
+.news-box {
+  -webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.26);
+  -moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.26);
+  box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.26);
+  display: none;
+}
+.input-row input {
+  /*font-size: 24pt;*/
+  /*border: 1px solid #aaa;
+  padding: 4px;
+  border-radius: 4px;*/
+}
+.input-row {
+  /* font-size: 20pt; */
+}
+.entry-form {
+  padding-bottom: 60px;
+}
+.entry-form input, .entry-form button, .entry-form select {
+  margin: 0 20px
+}
+.entry-form .minutes {
+  margin-right: 1px;
+}
+.entry-form .seconds {
+  margin-left: 1px;
+}
+.separator {
+  display: inline-block;
+  padding: 0 3px;
+  font-size: 30px;
+  color: white;
+  vertical-align: middle;
+}
+table {
+  min-width: 400px;
+  font-size: 22px;
+  font-family: 'Catamaran'; sans-serif;
+}
+td {
+  text-align: left;
+}
+.data-div {
+  padding-top: 40px;
+}
+.header-row {
+  border-bottom: 2px solid #888;
+  font-weight: 700;
+  display: none;
+}
+.header-row td {
+  margin-bottom: 20px;
+}
+.data-row {
+
+}
+.name-header {
+  min-width: 450px;
+}
+.date-col {
+  min-width: 6em;
+  font-weight: 100;
+}
+.time-col {
+  min-width: 3em;
+  font-weight: 100;
+}
+.type-col {
+  min-width: 5em;
+  font-weight: 100;
+}
+.name-col {
+  min-width: 16em;
+  font-weight: 500;
+}
+.duration-col {
+  min-width: 6em;
+  font-weight: 500;
+}
+.btn {
+  border-color: #339533;
+}
