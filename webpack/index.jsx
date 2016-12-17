@@ -1,14 +1,10 @@
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 
-import Tracker from './tracker/index.jsx';
+import startTracker from './tracker/index.jsx';
 
 module.exports = {
-  startTracker: function() {
-    ReactDOM.render(<Tracker/>, document.getElementById('tracker'));
-  },
-
+  startTracker,
   startReporter: function() {
     console.log('TBD');
   }

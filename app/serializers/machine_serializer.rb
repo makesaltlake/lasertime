@@ -1,3 +1,3 @@
 class MachineSerializer < ActiveModel::Serializer
-  attributes :id, :name
+  attributes :id, :name, :color
 end
