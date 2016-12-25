@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Button} from 'react-bootstrap';
 import axios from 'axios';
-import {observable, computed} from 'mobx';
+import {observable, computed, reaction} from 'mobx';
 import {observer} from 'mobx-react';
 import moment from 'moment';
 
@@ -75,10 +75,20 @@ class ResourceStore {
 
 
 class TrackerStore {
+  @observable selectedMachineId = null;
+
   constructor() {
     this.machinesStore = new ResourceStore('/api/machines');
     this.eventsStore = new ResourceStore('/api/events');
     this.peopleStore = new ResourceStore('/api/people');
+
+    reaction(() => {
+      return this.machinesStore.data
+    }, (machines) => {
+      if (machines != null && this.selectedMachineId == null) {
+        this.selectedMachineId = machines[0].id;
+      }
+    }, true);
   }
 
   @computed get machines() {
@@ -87,6 +97,18 @@ class TrackerStore {
 
   @computed get events() {
     return this.eventsStore.data || [];
+  }
+
+  @computed get color() {
+    let color = null;
+
+    (this.machinesStore.data || []).forEach((machine) => {
+      if (machine.id == this.selectedMachineId) {
+        color = machine.color;
+      }
+    });
+
+    return color;
   }
 }
 
@@ -98,29 +120,19 @@ var Tracker = observer(React.createClass({
       minutes: '',
       seconds: '',
       mode: 'vector',
-      machine: '1'
+      submitting: false
     };
-  },
-
-  getColor() {
-    let color = null;
-    this.props.store.machines.forEach((machine) => {
-      if (machine.id == this.state.machine) {
-        color = machine.color;
-      }
-    });
-    return color;
   },
 
   render() {
     return <div>
-      <div className="top-bar" style={{backgroundColor: this.getColor()}}>
+      <div className="top-bar" style={{backgroundColor: this.props.store.color}}>
         <div className="top-bar-machine-chooser">
           <div className="form-inline">
-            <select className="form-control input-lg" value={this.state.machine} onChange={this.machineChanged}>
+            <select className="form-control input-lg" value={this.state.selectedMachineId} onChange={this.machineChanged}>
               {
                 this.props.store.machines.map(function(machine) {
-                  return <option value={machine.id}>{machine.name}</option>
+                  return <option key={machine.id} value={machine.id}>{machine.name}</option>
                 })
               }
             </select>
@@ -136,7 +148,7 @@ var Tracker = observer(React.createClass({
             <option value="vector">Vector</option>
             <option value="raster">Raster</option>
           </select>
-          <button type="submit" className="btn btn-success btn-lg">Enter</button>
+          <button type="submit" className="btn btn-success btn-lg" disabled={this.state.submitting} onClick={this.submit}>Enter</button>
         </div>
       </div>
       <div className="data-div">
@@ -144,7 +156,7 @@ var Tracker = observer(React.createClass({
           <tbody>
             {
               this.props.store.events.map(function(event) {
-                return <tr className="data-row">
+                return <tr key={event.id} className="data-row">
                   <td className="name-col">
                     {event.person_name}
                   </td>
@@ -170,6 +182,7 @@ var Tracker = observer(React.createClass({
   },
 
   machineChanged(event) {
+    this.store.selectedMachineId = event.target.value;
     this.setState({machine: event.target.value})
   },
 
@@ -189,8 +202,29 @@ var Tracker = observer(React.createClass({
     this.setState({mode: event.target.value});
   },
 
-  onClick() {
-    this.setState({hits: this.state.hits + 1});
+  submit(event) {
+    axios.post('/api/events', {
+      authenticity_token: AUTHENTICITY_TOKEN,
+      machine_id: this.props.store.selectedMachineId,
+      name: this.state.name,
+      seconds: (parseInt(this.state.minutes) * 60) + parseInt(this.state.seconds),
+      mode: this.state.mode
+    }).then((response) => {
+      this.props.store.eventsStore.reload();
+      this.setState({
+        submitting: false,
+        name: '',
+        minutes: '',
+        seconds: '',
+        mode: 'vector'
+      });
+    }).catch((error) => {
+      this.setState({
+        submitting: false
+      });
+    });
+
+    this.setState({submitting: true});
   }
 }));
 
