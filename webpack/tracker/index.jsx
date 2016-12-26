@@ -220,11 +220,20 @@ var Tracker = observer(React.createClass({
   },
 
   submit(event) {
+    let minutes = this.state.minutes.length > 0 ? parseInt(this.state.minutes) : 0;
+    let seconds = this.state.seconds.length > 0 ? parseInt(this.state.seconds) : 0;
+    seconds += minutes * 60;
+
+    if (seconds == 0) {
+      // TODO: Show a message or something
+      return;
+    }
+
     axios.post('/api/events', {
       authenticity_token: AUTHENTICITY_TOKEN,
       machine_id: this.props.store.selectedMachineId,
       name: this.state.name,
-      seconds: (parseInt(this.state.minutes) * 60) + parseInt(this.state.seconds),
+      seconds,
       mode: this.state.mode
     }).then((response) => {
       this.props.store.eventsStore.reload();
