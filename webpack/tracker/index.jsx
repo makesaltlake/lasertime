@@ -6,6 +6,7 @@ import axios from 'axios';
 import {observable, computed, reaction} from 'mobx';
 import {observer} from 'mobx-react';
 import moment from 'moment';
+import {Autocomplete} from '../autocomplete.jsx';
 
 function formatDuration(originalSeconds) {
   let hours = Math.floor(originalSeconds / 3600);
@@ -99,6 +100,16 @@ class TrackerStore {
     return this.eventsStore.data || [];
   }
 
+  @computed get people() {
+    return this.peopleStore.data || [];
+  }
+
+  @computed get personNames() {
+    return this.people.map(person => {
+      return person.name;
+    });
+  }
+
   @computed get color() {
     let color = null;
 
@@ -140,7 +151,13 @@ var Tracker = observer(React.createClass({
         </div>
         <div className="top-bar-title">Laser time</div>
         <div className="form-inline entry-form">
-          <input size="50" placeholder="Name" className="form-control input-lg" value={this.state.name} onChange={this.nameChanged}/>
+          <Autocomplete
+            value={this.state.name}
+            onValueChanged={this.nameChanged}
+            inputClass="input-lg"
+            items={this.props.store.personNames}
+            inputProps={{size: '50', placeholder: 'Name'}}
+          />
           <input size="2" placeholder="MM" className="form-control input-lg minutes" value={this.state.minutes} onChange={this.minutesChanged}/>
           <div className="separator">:</div>
           <input size="2" placeholder="SS" className="form-control input-lg seconds" value={this.state.seconds} onChange={this.secondsChanged}/>
@@ -186,8 +203,8 @@ var Tracker = observer(React.createClass({
     this.setState({machine: event.target.value})
   },
 
-  nameChanged(event) {
-    this.setState({name: event.target.value});
+  nameChanged(value) {
+    this.setState({name: value});
   },
 
   minutesChanged(event) {

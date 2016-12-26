@@ -40,8 +40,12 @@ body {
 .entry-form {
   padding-bottom: 60px;
 }
-.entry-form input, .entry-form button, .entry-form select {
+.entry-form > input, .entry-form > button, .entry-form > select, .entry-form > .dropdown {
   margin: 0 20px
+}
+.entry-form .autocomplete-dropdown {
+  font-size: 16px;
+  padding: 10px 0;
 }
 .entry-form .minutes {
   margin-right: 1px;

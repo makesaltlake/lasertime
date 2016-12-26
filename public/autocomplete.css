@@ -1,0 +1,8 @@
+.autocomplete-container {
+  position: relative;
+  display: inline-block;
+}
+
+.autocomplete-dropdown {
+  width: 100%;
+}
